@@ -2,7 +2,6 @@ package com.learn.springbootreactjs.controllers;
 
 import com.learn.springbootreactjs.data.ClientRepository;
 import com.learn.springbootreactjs.models.Client;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +40,14 @@ public class ClientController {
         Client currentClient = clientRepository.findById(id).orElseThrow();
         currentClient.setName(client.getName());
         currentClient.setEmail(client.getEmail());
+        Client savedClient = clientRepository.save(currentClient);
 
+        return ResponseEntity.ok(savedClient);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Client> deleteClient(@PathVariable Long id) {
+        clientRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }
